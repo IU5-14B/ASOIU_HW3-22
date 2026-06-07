@@ -1,5 +1,6 @@
 using System.Text;
 using ASOIU_3.Data;
+using ASOIU_3.UI;
 
 namespace ASOIU_3;
 
@@ -20,7 +21,8 @@ public static class Program
         try
         {
             DatabaseInitializer.Initialize();
-            Console.WriteLine("База данных создана и готова к работе.");
+            var application = new ConsoleApplication();
+            application.Run();
             return 0;
         }
         catch (Exception exception)
