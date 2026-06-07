@@ -30,17 +30,8 @@
 Требуется .NET SDK 10.
 
 ```bash
-dotnet restore ASOIU-3.slnx
+dotnet restore ASOIU-3/ASOIU-3.csproj
 dotnet run --project ASOIU-3/ASOIU-3.csproj
 ```
 
 Файл `app.db` создаётся в текущем рабочем каталоге и не добавляется в Git.
-
-## Проверка
-
-```bash
-dotnet test ASOIU-3.slnx
-```
-
-Интеграционные тесты работают с отдельными SQLite-базами в памяти и
-проверяют начальные данные, CRUD, ограничения и все разделы отчёта.

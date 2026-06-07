@@ -12,12 +12,7 @@ public static class DatabaseInitializer
     /// </summary>
     public static void Initialize()
     {
-        Initialize(() => new AppDbContext());
-    }
-
-    internal static void Initialize(Func<AppDbContext> createContext)
-    {
-        using var context = createContext();
+        using var context = new AppDbContext();
         context.Database.EnsureCreated();
 
         if (context.Restaurants.Any())

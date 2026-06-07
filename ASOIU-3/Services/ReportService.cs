@@ -5,16 +5,9 @@ namespace ASOIU_3.Services;
 
 internal sealed class ReportService
 {
-    private readonly Func<AppDbContext> _createContext;
-
-    public ReportService(Func<AppDbContext>? createContext = null)
-    {
-        _createContext = createContext ?? (() => new AppDbContext());
-    }
-
     public ReportData Generate()
     {
-        using var context = _createContext();
+        using var context = new AppDbContext();
 
         var menuItems = context.MenuItems
             .AsNoTracking()
