@@ -7,10 +7,16 @@ namespace ASOIU_3.Services;
 internal sealed class MenuItemService
 {
     private const int MaximumNameLength = 120;
+    private readonly Func<AppDbContext> _createContext;
+
+    public MenuItemService(Func<AppDbContext>? createContext = null)
+    {
+        _createContext = createContext ?? (() => new AppDbContext());
+    }
 
     public IReadOnlyList<MenuItemListItem> GetAll()
     {
-        using var context = new AppDbContext();
+        using var context = _createContext();
 
         var menuItems = context.MenuItems
             .AsNoTracking()
@@ -25,7 +31,7 @@ internal sealed class MenuItemService
 
     public MenuItemListItem? GetById(int id)
     {
-        using var context = new AppDbContext();
+        using var context = _createContext();
 
         var menuItem = context.MenuItems
             .AsNoTracking()
@@ -37,7 +43,7 @@ internal sealed class MenuItemService
 
     public IReadOnlyList<RestaurantChoice> GetRestaurantChoices()
     {
-        using var context = new AppDbContext();
+        using var context = _createContext();
 
         return context.Restaurants
             .AsNoTracking()
@@ -57,7 +63,7 @@ internal sealed class MenuItemService
             return validationResult;
         }
 
-        using var context = new AppDbContext();
+        using var context = _createContext();
         if (!context.Restaurants.Any(restaurant => restaurant.Id == restaurantId))
         {
             return ServiceResult.Fail("Выбранный ресторан не найден.");
@@ -86,7 +92,7 @@ internal sealed class MenuItemService
             return validationResult;
         }
 
-        using var context = new AppDbContext();
+        using var context = _createContext();
         var menuItem = context.MenuItems.Find(id);
         if (menuItem is null)
         {
@@ -108,7 +114,7 @@ internal sealed class MenuItemService
 
     public ServiceResult Delete(int id)
     {
-        using var context = new AppDbContext();
+        using var context = _createContext();
         var menuItem = context.MenuItems.Find(id);
         if (menuItem is null)
         {

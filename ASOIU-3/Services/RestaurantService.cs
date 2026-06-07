@@ -6,10 +6,16 @@ namespace ASOIU_3.Services;
 internal sealed class RestaurantService
 {
     private const int MaximumNameLength = 120;
+    private readonly Func<AppDbContext> _createContext;
+
+    public RestaurantService(Func<AppDbContext>? createContext = null)
+    {
+        _createContext = createContext ?? (() => new AppDbContext());
+    }
 
     public IReadOnlyList<RestaurantListItem> GetAll()
     {
-        using var context = new AppDbContext();
+        using var context = _createContext();
 
         return context.Restaurants
             .AsNoTracking()
@@ -30,7 +36,7 @@ internal sealed class RestaurantService
             return validationResult;
         }
 
-        using var context = new AppDbContext();
+        using var context = _createContext();
         if (RestaurantNameExists(context, normalizedName))
         {
             return ServiceResult.Fail("Ресторан с таким названием уже существует.");
@@ -50,7 +56,7 @@ internal sealed class RestaurantService
             return validationResult;
         }
 
-        using var context = new AppDbContext();
+        using var context = _createContext();
         var restaurant = context.Restaurants.Find(id);
         if (restaurant is null)
         {
@@ -70,7 +76,7 @@ internal sealed class RestaurantService
 
     public ServiceResult Delete(int id)
     {
-        using var context = new AppDbContext();
+        using var context = _createContext();
         var restaurant = context.Restaurants.Find(id);
         if (restaurant is null)
         {
