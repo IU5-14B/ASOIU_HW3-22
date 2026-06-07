@@ -1,0 +1,17 @@
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+.vscode/
+.DS_Store
+__MACOSX/
+*.log
+*.tmp
+*.temp
+.idea/
+*.nupkg
+*.snupkg
+packages/
+TestResults/
+coverage/
